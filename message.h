@@ -30,7 +30,7 @@ typedef struct MESSAGE {
  * @var MESSAGE_STORAGE::used type __uint16_t - number of used used elements in the array
  */
 typedef struct MESSAGE_STORAGE {
-    MESSAGE** messages;
+    MESSAGE** data;
     __uint16_t allocated;
     __uint16_t used;
 } MESSAGE_STORAGE;

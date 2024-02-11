@@ -54,7 +54,7 @@ MESSAGE_STORAGE* createMessageStorage(__uint16_t prealloc) {
     MESSAGE_STORAGE* storage = malloc(sizeof(MESSAGE_STORAGE));
     if (storage == NULL)
         return NULL;
-    if ((storage->messages = malloc(prealloc * sizeof(MESSAGE*))) == NULL) {
+    if ((storage->data = malloc(prealloc * sizeof(MESSAGE*))) == NULL) {
         free(storage);
         return NULL;
     }
@@ -73,9 +73,9 @@ void deleteMessageStorage(MESSAGE_STORAGE* storage) {
     if (storage == NULL)
         return;
     for (__uint16_t i=0;i<storage->used;i++) {
-        destroyMessage(storage->messages[i]);
+        destroyMessage(storage->data[i]);
     }
-    free(storage->messages);
+    free(storage->data);
     free(storage);
 }
 
@@ -97,16 +97,16 @@ MESSAGE* addMessageToStorage(MESSAGE_STORAGE* messageStorage, char* text, bool i
     if (messageStorage->used == messageStorage->allocated) {
         if (messageStorage->allocated+INCREMENT >= __UINT16_MAX__)
             return NULL;
-        MESSAGE** newMessages = realloc(messageStorage->messages, (messageStorage->allocated + INCREMENT) * sizeof(MESSAGE*));
+        MESSAGE** newMessages = realloc(messageStorage->data, (messageStorage->allocated + INCREMENT) * sizeof(MESSAGE*));
         if (newMessages == NULL)
             return NULL;
-        messageStorage->messages = newMessages;
+        messageStorage->data = newMessages;
         messageStorage->allocated += INCREMENT;
     }
     MESSAGE* message = createMessage(text, isGood);
     if (message == NULL)
         return NULL;
-    messageStorage->messages[messageStorage->used++] = message;
+    messageStorage->data[messageStorage->used++] = message;
     return message;
 }
 
@@ -122,9 +122,9 @@ MESSAGE* addMessageToStorage(MESSAGE_STORAGE* messageStorage, char* text, bool i
 bool destroyMessageInStorage(MESSAGE_STORAGE* messageStorage, __uint16_t index) {
     if (messageStorage == NULL || index >= messageStorage->used)
         return false;
-    destroyMessage(messageStorage->messages[index]);
+    destroyMessage(messageStorage->data[index]);
     for (__uint16_t i=index;i<messageStorage->used-1;i++) {
-        messageStorage->messages[i] = messageStorage->messages[i+1];
+        messageStorage->data[i] = messageStorage->data[i+1];
     }
     messageStorage->used--;
     return true;

@@ -34,7 +34,7 @@ typedef struct VEGGIE {
  * and its current size is determined by the allocated member
  */
 typedef struct VEGGIE_STORAGE {
-    VEGGIE** veggies;
+    VEGGIE** data;
     __uint16_t used;
     __uint16_t allocated;
 } VEGGIE_STORAGE;

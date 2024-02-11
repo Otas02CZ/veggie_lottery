@@ -65,19 +65,19 @@ int main() {
     __uint8_t goodness = rand() % 2;
 
     // use the starting index to find the first matching value in veggies
-    while(veggies->veggies[veggieIndex]->isGood != goodness) {
+    while(veggies->data[veggieIndex]->isGood != goodness) {
         veggieIndex++;
         if (veggieIndex == veggies->used)
             veggieIndex = 0;
     }
     // use the starting index to find the first matching value in messages
-    while(messages->messages[messageIndex]->isGood != goodness) {
+    while(messages->data[messageIndex]->isGood != goodness) {
         messageIndex++;
         if (messageIndex == messages->used)
             messageIndex = 0;
     }
     // print the selected message with the selected veggie
-    printf(messages->messages[messageIndex]->text, veggies->veggies[veggieIndex]->article, veggies->veggies[veggieIndex]->name);
+    printf(messages->data[messageIndex]->text, veggies->data[veggieIndex]->article, veggies->data[veggieIndex]->name);
     // deallocate the storages
     deleteVeggieStorage(veggies);
     deleteMessageStorage(messages);

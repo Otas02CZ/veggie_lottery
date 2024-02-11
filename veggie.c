@@ -60,7 +60,7 @@ VEGGIE_STORAGE* createVeggieStorage(__uint16_t prealloc) {
     VEGGIE_STORAGE* storage = malloc(sizeof(VEGGIE_STORAGE));
     if (storage == NULL)
         return NULL;
-    if ((storage->veggies = malloc(prealloc * sizeof(VEGGIE*))) == NULL) {
+    if ((storage->data = malloc(prealloc * sizeof(VEGGIE*))) == NULL) {
         free(storage);
         return NULL;
     }
@@ -79,9 +79,9 @@ void deleteVeggieStorage(VEGGIE_STORAGE* storage) {
     if (storage == NULL)
         return;
     for (__uint16_t i=0;i<storage->used;i++) {
-        destroyVeggie(storage->veggies[i]);
+        destroyVeggie(storage->data[i]);
     }
-    free(storage->veggies);
+    free(storage->data);
     free(storage);
 }
 
@@ -104,16 +104,16 @@ VEGGIE* addVeggieToStorage(VEGGIE_STORAGE* storage, char* veggieName, char* arti
     if (storage->used == storage->allocated) {
         if (storage->allocated+INCREMENT >= __UINT16_MAX__)
             return NULL;
-        VEGGIE** newVeggies = realloc(storage->veggies, (storage->allocated + INCREMENT) * sizeof(VEGGIE*));
+        VEGGIE** newVeggies = realloc(storage->data, (storage->allocated + INCREMENT) * sizeof(VEGGIE*));
         if (newVeggies == NULL)
             return NULL;
-        storage->veggies = newVeggies;
+        storage->data = newVeggies;
         storage->allocated += INCREMENT;
     }
     VEGGIE* veggie = createVeggie(veggieName, article, isGood);
     if (veggie == NULL)
         return NULL;
-    storage->veggies[storage->used++] = veggie;
+    storage->data[storage->used++] = veggie;
     return veggie;
 }
 
@@ -129,9 +129,9 @@ VEGGIE* addVeggieToStorage(VEGGIE_STORAGE* storage, char* veggieName, char* arti
 bool destroyVeggieInStorage(VEGGIE_STORAGE* storage, __uint16_t index) {
     if (storage == NULL || index >= storage->used)
         return false;
-    destroyVeggie(storage->veggies[index]);
+    destroyVeggie(storage->data[index]);
     for (__uint16_t i=index;i<storage->used-1;i++) {
-        storage->veggies[i] = storage->veggies[i+1];
+        storage->data[i] = storage->data[i+1];
     }
     storage->used--;
     return true;
