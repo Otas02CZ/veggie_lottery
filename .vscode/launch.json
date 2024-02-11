@@ -5,11 +5,11 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": ["ahoj", "123456789"],
+      "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "/home/otakarkoci/git/veggie_lottery",
-      "program": "/home/otakarkoci/git/veggie_lottery/main",
+      "program": "/home/otakarkoci/git/veggie_lottery/debug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
