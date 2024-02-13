@@ -8,8 +8,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <limits.h>
 #define MESSAGE_H
-#define INCREMENT 10 //INCREMENT for memory reallocation
+#define INCREMENT 10 //increment for memory reallocation
 
 /**
  * @brief Message structure for storing message text and its goodness
@@ -25,14 +26,14 @@ typedef struct MESSAGE {
 /**
  * @brief Message storage structure for storing multiple messages in a tight place
  * @struct MESSAGE_STORAGE
- * @var MESSAGE_STORAGE::messages type MESSAGE** - array of pointers to MESSAGE structures
- * @var MESSAGE_STORAGE::allocated type __uint16_t - number of allocated elements in the array
- * @var MESSAGE_STORAGE::used type __uint16_t - number of used used elements in the array
+ * @var MESSAGE_STORAGE::data type MESSAGE** - array of pointers to MESSAGE structures
+ * @var MESSAGE_STORAGE::allocated type unsigned short - number of allocated elements in the array
+ * @var MESSAGE_STORAGE::used type unsigned short - number of used used elements in the array
  */
 typedef struct MESSAGE_STORAGE {
     MESSAGE** data;
-    __uint16_t allocated;
-    __uint16_t used;
+    unsigned short allocated;
+    unsigned short used;
 } MESSAGE_STORAGE;
 
 void destroyMessage(MESSAGE* message);

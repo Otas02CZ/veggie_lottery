@@ -44,13 +44,13 @@ MESSAGE* createMessage(char* text, bool isGood) {
 /**
  * @brief Creates and returns a Message storage object
  * 
- * @param prealloc type __uint16_t - size of the storage to be preallocated
+ * @param prealloc type unsigned short - size of the storage to be preallocated
  * @note The function allocates memory for the MESSAGE_STORAGE* object and its members, the size of the allocated
  * memory of the member array is determined by the prealloc parameter and later is increased
  * by INCREMENT if used size would exceed the allocated size
  * @return MESSAGE_STORAGE* pointer to the created MESSAGE_STORAGE object
  */
-MESSAGE_STORAGE* createMessageStorage(__uint16_t prealloc) {
+MESSAGE_STORAGE* createMessageStorage(unsigned short prealloc) {
     MESSAGE_STORAGE* storage = malloc(sizeof(MESSAGE_STORAGE));
     if (storage == NULL)
         return NULL;
@@ -72,7 +72,7 @@ MESSAGE_STORAGE* createMessageStorage(__uint16_t prealloc) {
 void deleteMessageStorage(MESSAGE_STORAGE* storage) {
     if (storage == NULL)
         return;
-    for (__uint16_t i=0;i<storage->used;i++) {
+    for (unsigned short i=0;i<storage->used;i++) {
         destroyMessage(storage->data[i]);
     }
     free(storage->data);
@@ -95,7 +95,7 @@ MESSAGE* addMessageToStorage(MESSAGE_STORAGE* messageStorage, char* text, bool i
     if (messageStorage == NULL)
         return NULL;
     if (messageStorage->used == messageStorage->allocated) {
-        if (messageStorage->allocated+INCREMENT >= __UINT16_MAX__)
+        if (messageStorage->allocated+INCREMENT >= USHRT_MAX)
             return NULL;
         MESSAGE** newMessages = realloc(messageStorage->data, (messageStorage->allocated + INCREMENT) * sizeof(MESSAGE*));
         if (newMessages == NULL)
@@ -114,16 +114,16 @@ MESSAGE* addMessageToStorage(MESSAGE_STORAGE* messageStorage, char* text, bool i
  * @brief Destroys a Message object in the storage and moves the rest of the objects to fill the gap (-1 if any)
  * 
  * @param storage type MESSAGE_STORAGE* - pointer to the MESSAGE_STORAGE object
- * @param index type __uint16_t - index of the message to be destroyed
+ * @param index type unsigned short - index of the message to be destroyed
  * @note The function frees the memory allocated for the MESSAGE* object and moves the rest of the objects
  * to fill the gap (-1 if any), the member used (used elements) is decremented by 1
  * @return bool true if the message was destroyed, false if the storage is NULL or the index is out of bounds
  */
-bool destroyMessageInStorage(MESSAGE_STORAGE* messageStorage, __uint16_t index) {
+bool destroyMessageInStorage(MESSAGE_STORAGE* messageStorage, unsigned short index) {
     if (messageStorage == NULL || index >= messageStorage->used)
         return false;
     destroyMessage(messageStorage->data[index]);
-    for (__uint16_t i=index;i<messageStorage->used-1;i++) {
+    for (unsigned short i=index;i<messageStorage->used-1;i++) {
         messageStorage->data[i] = messageStorage->data[i+1];
     }
     messageStorage->used--;

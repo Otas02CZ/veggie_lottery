@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <limits.h>
 #define VEGGIE_H
 #define INCREMENT 10 //INCREMENT for memory reallocation
 
@@ -28,22 +29,22 @@ typedef struct VEGGIE {
  * @brief Veggie storage structure for storing multiple veggies in a tight space
  * @struct VEGGIE_STORAGE
  * @var VEGGIE_STORAGE::veggies type VEGGIE** - array of pointers to VEGGIE structures
- * @var VEGGIE_STORAGE::used type __uint16_t - number of used elements in the array
- * @var VEGGIE_STORAGE::allocated type __uint16_t - number of allocated elements in the array
+ * @var VEGGIE_STORAGE::used type unsigned short - number of used elements in the array
+ * @var VEGGIE_STORAGE::allocated type unsigned short - number of allocated elements in the array
  * @note The array of pointers to VEGGIE structures is allocated dynamically (as needed when size is exceeded)
  * and its current size is determined by the allocated member
  */
 typedef struct VEGGIE_STORAGE {
     VEGGIE** data;
-    __uint16_t used;
-    __uint16_t allocated;
+    unsigned short used;
+    unsigned short allocated;
 } VEGGIE_STORAGE;
 
 void destroyVeggie(VEGGIE* veggie);
 VEGGIE* createVeggie(char* veggieName, char* article, bool isGood);
-VEGGIE_STORAGE* createVeggieStorage(__uint16_t prealloc);
+VEGGIE_STORAGE* createVeggieStorage(unsigned short prealloc);
 void deleteVeggieStorage(VEGGIE_STORAGE* veggieStorage);
 VEGGIE* addVeggieToStorage(VEGGIE_STORAGE* veggieStorage, char* veggieName, char* article, bool isGood);
-bool destroyVeggieInStorage(VEGGIE_STORAGE* veggieStorage, __uint16_t index);
+bool destroyVeggieInStorage(VEGGIE_STORAGE* veggieStorage, unsigned short index);
 
 #endif

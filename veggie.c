@@ -50,13 +50,13 @@ void destroyVeggie(VEGGIE* veggie) {
 /**
  * @brief Creates and returns a Veggie storage object
  * 
- * @param prealloc type __uint16_t - size of the storage to be preallocated
+ * @param prealloc type unsigned short - size of the storage to be preallocated
  * @note The function allocates memory for the VEGGIE_STORAGE* object and its members, the size of the allocated
  * memory of the member array is determined by the prealloc parameter and later is increased
  * by INCREMENT if used size would exceed the allocated size
  * @return VEGGIE_STORAGE* pointer to the created VEGGIE_STORAGE object
  */
-VEGGIE_STORAGE* createVeggieStorage(__uint16_t prealloc) {
+VEGGIE_STORAGE* createVeggieStorage(unsigned short prealloc) {
     VEGGIE_STORAGE* storage = malloc(sizeof(VEGGIE_STORAGE));
     if (storage == NULL)
         return NULL;
@@ -78,7 +78,7 @@ VEGGIE_STORAGE* createVeggieStorage(__uint16_t prealloc) {
 void deleteVeggieStorage(VEGGIE_STORAGE* storage) {
     if (storage == NULL)
         return;
-    for (__uint16_t i=0;i<storage->used;i++) {
+    for (unsigned short i=0;i<storage->used;i++) {
         destroyVeggie(storage->data[i]);
     }
     free(storage->data);
@@ -102,7 +102,7 @@ VEGGIE* addVeggieToStorage(VEGGIE_STORAGE* storage, char* veggieName, char* arti
     if (storage == NULL)
         return NULL;
     if (storage->used == storage->allocated) {
-        if (storage->allocated+INCREMENT >= __UINT16_MAX__)
+        if (storage->allocated+INCREMENT >= USHRT_MAX)
             return NULL;
         VEGGIE** newVeggies = realloc(storage->data, (storage->allocated + INCREMENT) * sizeof(VEGGIE*));
         if (newVeggies == NULL)
@@ -121,16 +121,16 @@ VEGGIE* addVeggieToStorage(VEGGIE_STORAGE* storage, char* veggieName, char* arti
  * @brief Destroys a Veggie object in the storage and moves the rest of the objects to fill the gap (-1 if any)
  * 
  * @param storage type VEGGIE_STORAGE* - pointer to the VEGGIE_STORAGE object
- * @param index type __uint16_t - index of the veggie to be destroyed
+ * @param index type unsigned short - index of the veggie to be destroyed
  * @note The function frees the memory allocated for the VEGGIE* object and moves the rest of the objects
  * to fill the gap (-1 if any), the member used (used elements) is decremented by 1
  * @return bool true if the veggie was destroyed, false if the storage is NULL or the index is out of bounds
  */
-bool destroyVeggieInStorage(VEGGIE_STORAGE* storage, __uint16_t index) {
+bool destroyVeggieInStorage(VEGGIE_STORAGE* storage, unsigned short index) {
     if (storage == NULL || index >= storage->used)
         return false;
     destroyVeggie(storage->data[index]);
-    for (__uint16_t i=index;i<storage->used-1;i++) {
+    for (unsigned short i=index;i<storage->used-1;i++) {
         storage->data[i] = storage->data[i+1];
     }
     storage->used--;

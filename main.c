@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+
 #include "veggie.h"
 #include "message.h"
 
@@ -60,9 +61,9 @@ int main() {
     addMessageToStorage(messages, "Oh no. You will eat %s %s for breakfast, for lunch and for dinner!!\n", false);
 
     // randomly select a starting index for veggies and messages and goodness of the pair good/bad|0/1
-    __uint8_t veggieIndex = rand() % veggies->used;
-    __uint8_t messageIndex = rand() % messages->used;
-    __uint8_t goodness = rand() % 2;
+    unsigned short veggieIndex = rand() % veggies->used;
+    unsigned short messageIndex = rand() % messages->used;
+    bool goodness = rand() % 2;
 
     // use the starting index to find the first matching value in veggies
     while(veggies->data[veggieIndex]->isGood != goodness) {
